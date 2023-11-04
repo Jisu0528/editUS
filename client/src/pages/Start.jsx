@@ -22,7 +22,7 @@ function Start() {
 }
 
 const Wrapper = styled.div`
-  margin: 200px 5vw 0 16vw;
+  margin: 160px 5vw 0 16vw;
 `;
 
 const TopSection = styled.div`

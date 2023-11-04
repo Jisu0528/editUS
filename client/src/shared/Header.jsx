@@ -19,7 +19,7 @@ const Wrapper = styled.header`
 const Logo = styled.div`
   font-size: 36px;
   font-weight: 600;
-  padding: 90px 0 0 200px;
+  padding: 90px 0 0 10vw;
 `;
 
 const StyledLink = styled(Link)`

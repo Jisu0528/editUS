@@ -5,7 +5,7 @@ function Login() {
   return (
     <Wrapper>
       <Title>Sign into editUs</Title>
-      <LoginForm>
+      <LoginForm autocomplete='off'>
         <Input type="text" name="username" placeholder="Username" />
         <Input type="password" name="password" placeholder="Password" />
         <LoginBtn type="submit">LOGIN IN</LoginBtn>

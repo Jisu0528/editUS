@@ -1,19 +1,88 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { loginRoute } from "../utils/AIPRoutes";
 
 function Login() {
+  const navigate = useNavigate();
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+  const [values, setValues] = useState({
+    username: "",
+    password: ""
+  });
+
+  // useEffect(() => {
+  //   if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+  //     navigate("/");
+  //   }
+  // }, []);
+
+  const onChangeHandler = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleValidation = () => {
+    const { password, username } = values;
+    if (username === "") {
+      toast.error(
+        "Username should be greater than 3 characters.",
+        toastOptions
+      );
+      return false;
+    } else if (password === "") {
+      toast.error(
+        "Password should be equal or greater than 8 characters.",
+        toastOptions
+      );
+      return false;
+    }
+
+    return true;
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    if (handleValidation()) {
+      console.log("validation", loginRoute);
+      const { username, password } = values;
+      const { data } = await axios.post(loginRoute, {
+        username,
+        password,
+      });
+
+      if (data.status === false) {
+        toast.error(data.msg, toastOptions);
+      }
+      if (data.status === true) {
+        localStorage.setItem(
+          process.env.REACT_APP_LOCALHOST_KEY,
+          JSON.stringify(data.user)
+        );
+        navigate("/editUS");
+      }
+    }
+  };
   return (
     <Wrapper>
       <Title>Sign into editUs</Title>
-      <LoginForm autocomplete='off'>
-        <Input type="text" name="username" placeholder="Username" />
-        <Input type="password" name="password" placeholder="Password" />
+      <LoginForm autocomplete='off' action="" onSubmit={(e) => onSubmitHandler(e)}>
+        <Input type="text" name="username" placeholder="Username" onChange={(e) => onChangeHandler(e)}/>
+        <Input type="password" name="password" placeholder="Password" onChange={(e) => onChangeHandler(e)}/>
         <LoginBtn type="submit">LOGIN IN</LoginBtn>
       </LoginForm>
       
       <Register>Don't Have An Account?
         <StyledLink to="/register">Register</StyledLink>
       </Register>
+      <ToastContainer />
     </Wrapper>
   );
 };

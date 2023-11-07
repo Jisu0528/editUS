@@ -1,21 +1,103 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { registerRoute } from "../utils/AIPRoutes";
 
 function Register() {
+  const navigate = useNavigate();
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // useEffect(() => {
+  //   if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+  //     navigate("/login");
+  //   }
+  // }, []);
+
+  const onChangeHandler = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleValidation = () => {
+    const { password, confirmPassword, username, email } = values;
+    if (password !== confirmPassword) {
+      toast.error(
+        "Password and confirm password should be same.",
+        toastOptions
+      );
+      return false;
+    } else if (username.length < 3) {
+      toast.error(
+        "Username should be greater than 3 characters.",
+        toastOptions
+      );
+      return false;
+    } else if (password.length < 8) {
+      toast.error(
+        "Password should be equal or greater than 8 characters.",
+        toastOptions
+      );
+      return false;
+    } else if (email === "") {
+      toast.error("Email is required.", toastOptions);
+      return false;
+    }
+
+    return true;
+  };
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    if (handleValidation()) {
+      console.log("validation", registerRoute);
+      const { email, username, password } = values;
+      const { data } = await axios.post(registerRoute, {
+        username,
+        email,
+        password,
+      });
+
+      if (data.status === false) {
+        toast.error(data.msg, toastOptions);
+      }
+      if (data.status === true) {
+        localStorage.setItem(
+          process.env.REACT_APP_LOCALHOST_KEY,
+          JSON.stringify(data.user)
+        );
+        navigate("/login");
+      }
+    }
+  };
+
   return (
     <Wrapper>
       <Title>Welcome to editUS</Title>
-      <RegisterForm autocomplete='off'>
-        <Input type="text" name="username" placeholder="Username" />
-        <Input type="email" name="email" placeholder="Email" />
-        <Input type="password" name="password" placeholder="Password" />
-        <Input type="password" name="Confirm Password" placeholder="confirmPassword" />
+      <RegisterForm action="" onSubmit={(e) => onSubmitHandler(e)}>
+        <Input type="text" name="username" placeholder="Username" onChange={(e) => onChangeHandler(e)} autoComplete="off"/>
+        <Input type="email" name="email" placeholder="Email" onChange={(e) => onChangeHandler(e)} autoComplete="off"/>
+        <Input type="password" name="password" placeholder="Password" onChange={(e) => onChangeHandler(e)} autoComplete="off"/>
+        <Input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={(e) => onChangeHandler(e)} autoComplete="off"/>
         <RegisterBtn type="submit">CREATE USER</RegisterBtn>
       </RegisterForm>
       
       <Login>Already Have An Account?
-        <StyledLink to="/register">Login</StyledLink>
+        <StyledLink to="/login">Login</StyledLink>
       </Login>
+      <ToastContainer />
     </Wrapper>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import { loginRoute } from "../utils/AIPRoutes";
+import { loginRoute } from "../utils/AIPRoutes"; 
 
 function Login() {
   const navigate = useNavigate();

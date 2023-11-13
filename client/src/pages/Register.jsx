@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { registerRoute } from "../utils/AIPRoutes";
+import { registerRoute } from "../utils/AIPRoutes";  
 
 function Register() {
   const navigate = useNavigate();

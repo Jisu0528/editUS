@@ -2,30 +2,16 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import { registerRoute } from "../utils/AIPRoutes";
+import { registerRoute } from "../utils/AIPRoutes";  
 
 function Register() {
   const navigate = useNavigate();
-  const toastOptions = {
-    position: "bottom-right",
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
   const [values, setValues] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
-  // useEffect(() => {
-  //   if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-  //     navigate("/login");
-  //   }
-  // }, []);
 
   const onChangeHandler = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -34,25 +20,16 @@ function Register() {
   const handleValidation = () => {
     const { password, confirmPassword, username, email } = values;
     if (password !== confirmPassword) {
-      toast.error(
-        "Password and confirm password should be same.",
-        toastOptions
-      );
+      alert("Password and confirm password should be same.");
       return false;
     } else if (username.length < 3) {
-      toast.error(
-        "Username should be greater than 3 characters.",
-        toastOptions
-      );
+      alert("Username should be greater than 3 characters.");
       return false;
     } else if (password.length < 8) {
-      toast.error(
-        "Password should be equal or greater than 8 characters.",
-        toastOptions
-      );
+      alert("Password should be equal or greater than 8 characters.");
       return false;
     } else if (email === "") {
-      toast.error("Email is required.", toastOptions);
+      alert("Email is required.");
       return false;
     }
 
@@ -71,7 +48,7 @@ function Register() {
       });
 
       if (data.status === false) {
-        toast.error(data.msg, toastOptions);
+        alert(data.msg);
       }
       if (data.status === true) {
         localStorage.setItem(
@@ -97,18 +74,16 @@ function Register() {
       <Login>Already Have An Account?
         <StyledLink to="/login">Login</StyledLink>
       </Login>
-      <ToastContainer />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 100vw;  
-  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 60px;
+  margin-top: 100px;
 `;
 
 const Title = styled.div`

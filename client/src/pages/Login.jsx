@@ -2,28 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import { loginRoute } from "../utils/AIPRoutes";
+import { loginRoute } from "../utils/AIPRoutes"; 
 
 function Login() {
   const navigate = useNavigate();
-  const toastOptions = {
-    position: "bottom-right",
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
   const [values, setValues] = useState({
     username: "",
     password: ""
   });
-
-  // useEffect(() => {
-  //   if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-  //     navigate("/");
-  //   }
-  // }, []);
 
   const onChangeHandler = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -32,16 +18,10 @@ function Login() {
   const handleValidation = () => {
     const { password, username } = values;
     if (username === "") {
-      toast.error(
-        "Username should be greater than 3 characters.",
-        toastOptions
-      );
+      alert("Username should be greater than 3 characters.");
       return false;
     } else if (password === "") {
-      toast.error(
-        "Password should be equal or greater than 8 characters.",
-        toastOptions
-      );
+      alert("Password should be equal or greater than 8 characters.");
       return false;
     }
 
@@ -59,7 +39,7 @@ function Login() {
       });
 
       if (data.status === false) {
-        toast.error(data.msg, toastOptions);
+        alert(data.msg);
       }
       if (data.status === true) {
         localStorage.setItem(
@@ -82,18 +62,16 @@ function Login() {
       <Register>Don't Have An Account?
         <StyledLink to="/register">Register</StyledLink>
       </Register>
-      <ToastContainer />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 100vw;  
-  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 200px;
 `;
 
 const Title = styled.div`

@@ -3,8 +3,10 @@ import styled from "styled-components";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { loginRoute } from "../utils/AIPRoutes"; 
+import { setCookie } from "../Cookie";
 
-function Login() {
+function Login(props) {
+  const {onLogin} = props;
   const navigate = useNavigate();
   const [values, setValues] = useState({
     username: "",
@@ -33,27 +35,33 @@ function Login() {
     if (handleValidation()) {
       console.log("validation", loginRoute);
       const { username, password } = values;
-      const { data } = await axios.post(loginRoute, {
+      const response = await axios.post(loginRoute, {
         username,
         password,
-      });
+      }, {withCredentials: true});
 
-      if (data.status === false) {
-        alert(data.msg);
+      if (response.data.status === false) {
+        alert(response.data.msg);
       }
-      if (data.status === true) {
+      if (response.data.status === true) {
         localStorage.setItem(
           process.env.REACT_APP_LOCALHOST_KEY,
-          JSON.stringify(data.user)
+          JSON.stringify(response.data.user)
         );
+        const accessToken = response.data.token;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        setCookie("accessToken", accessToken, {path: '/editUS' });
+        console.log(response.data.data);
+        onLogin();
         navigate("/editUS");
       }
     }
   };
+
   return (
     <Wrapper>
       <Title>Sign into editUs</Title>
-      <LoginForm autocomplete='off' action="" onSubmit={(e) => onSubmitHandler(e)}>
+      <LoginForm autoComplete='off' action="" onSubmit={(e) => onSubmitHandler(e)}>
         <Input type="text" name="username" placeholder="Username" onChange={(e) => onChangeHandler(e)}/>
         <Input type="password" name="password" placeholder="Password" onChange={(e) => onChangeHandler(e)}/>
         <LoginBtn type="submit">LOGIN IN</LoginBtn>

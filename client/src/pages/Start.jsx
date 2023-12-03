@@ -2,8 +2,6 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 
 function Start() {
-  const url = "https://github.com/Jisu0528/editUS";
-
   return (
     <Wrapper>
       <TopSection>
@@ -15,7 +13,7 @@ function Start() {
       </Description>
       <Buttons>
         <StyledLink to="/login"><StratBtn>Start Now</StratBtn></StyledLink>
-        <LearnBtn onClick={() => {window.open(url)}}>Learn More</LearnBtn>
+        <StyledLink to="/learnmore"><LearnBtn>Learn More</LearnBtn></StyledLink>
       </Buttons>
     </Wrapper>
   );

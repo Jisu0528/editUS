@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { Main, Edit, Login, Register, Start } from "../pages";
+import { Main, Edit, Login, Register, Start, JoinRoom } from "../pages";
 import Header from "./Header";
 import { getCookie } from "../Cookie";
 
@@ -40,10 +40,12 @@ const Router = () => {
           <Route path="/" element={<Start />} />
           <Route path="/login" element={<Login onLogin={handleLogin}/>} />
           <Route path="/register" element={<Register />} />
+          
         </Route>
         <Route element={<PrivateRoute />}> 
-          <Route path="/:userid" element={<Main />} />
-          <Route path="/:userid/edit" element={<Edit />} />
+          <Route path="/joinroom" element={<JoinRoom />} />
+          <Route path="/:roomId" element={<Main />} />
+          <Route path="/:roomId/:docId" element={<Edit />} />
         </Route>
       </Routes>
     </BrowserRouter>

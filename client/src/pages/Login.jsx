@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import { loginRoute } from "../utils/AIPRoutes"; 
+import { loginRoute } from "../utils/APIRoutes"; 
 import { setCookie } from "../Cookie";
 
 function Login(props) {
@@ -44,16 +44,18 @@ function Login(props) {
         alert(response.data.msg);
       }
       if (response.data.status === true) {
+        const accessToken = response.data.token;
+        localStorage.setItem("accessToken", accessToken);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        setCookie("accessToken", accessToken, {path: '/editUS' });
         localStorage.setItem(
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(response.data.user)
         );
-        const accessToken = response.data.token;
-        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        setCookie("accessToken", accessToken, {path: '/editUS' });
+        console.log(response.headers);
         console.log(response.data.data);
         onLogin();
-        navigate("/editUS");
+        navigate("/joinroom");
       }
     }
   };
@@ -79,7 +81,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 200px;
+  margin-top: 100px;
 `;
 
 const Title = styled.div`

@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { createRoomRoute, joinRoomRoute } from "../utils/APIRoutes";
+import axios from "axios";
 
 function JoinRoom() {
   const [roomId, setRoomId] = useState('');
 
   const navigate = useNavigate();
 
-  const handleCreateRoom = async () => {
+  const handleCreateRoom = () => {
     const newRoomId = uuidv4();
-    console.log("New Room ID:", newRoomId);
+
+    axios.post(createRoomRoute, { roomID: newRoomId });
 
     navigator.clipboard.writeText(newRoomId)
     .then(() => {
@@ -23,7 +26,7 @@ function JoinRoom() {
 
   const handleJoinRoom = (e) => {
     e.preventDefault();
-    // roomId를 이용하여 해당 방으로 이동
+    axios.post(joinRoomRoute, {roomId});
     navigate(`/${roomId}`);
   };
 
@@ -37,6 +40,11 @@ function JoinRoom() {
           placeholder="Room ID"
           value={roomId}
           onChange={(e) => setRoomId(e.target.value)}
+        />
+        <Input 
+          type="password" 
+          name="password" 
+          placeholder="Password"
         />
         <JoinBtn type="submit" onClick={handleJoinRoom}>JOIN</JoinBtn>
       </RoomForm>
@@ -53,19 +61,19 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 180px;
+  margin-top: 100px;
 `;
 
 const Title = styled.div`
   font-size: 36px;
   font-weight: 500;
-  margin-bottom: 90px;
+  margin-bottom: 60px;
 `;
 
 const RoomForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
   margin-bottom: 35px;
 `;
 

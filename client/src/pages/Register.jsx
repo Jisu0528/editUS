@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { registerRoute } from "../utils/AIPRoutes";  
+import { registerRoute } from "../utils/APIRoutes";  
 
 function Register() {
   const navigate = useNavigate();
@@ -83,13 +83,13 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 60px;
 `;
 
 const Title = styled.div`
   font-size: 36px;
   font-weight: 500;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 
 const RegisterForm = styled.form`

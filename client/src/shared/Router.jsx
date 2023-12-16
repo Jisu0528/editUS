@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { Main, Edit, Login, Register, Start, JoinRoom, Info } from "../pages";
+import { Main, NewDoc, Login, Register, Start, JoinRoom, Info, EditDoc } from "../pages";
 import Header from "./Header";
 import { getCookie } from "../Cookie";
 
@@ -21,6 +21,12 @@ const Router = () => {
   const handleLogout = () => {
     setLoggedIn(false);
   };
+
+  useEffect(() => {
+    const loggedIn = CheckLogin();
+    setLoggedIn(loggedIn);
+  }, []);
+
 
   const PublicRoute = () => {
     console.log("isLogin: ", isLoggedIn);
@@ -46,7 +52,8 @@ const Router = () => {
         <Route element={<PrivateRoute />}> 
           <Route path="/joinroom" element={<JoinRoom />} />
           <Route path="/:roomId" element={<Main />} />
-          <Route path="/:roomId/:docId" element={<Edit />} />
+          <Route path="/:roomId/new" element={<NewDoc />} />
+          <Route path="/:roomId/:docId" element={<EditDoc />} />
         </Route>
       </Routes>
     </BrowserRouter>

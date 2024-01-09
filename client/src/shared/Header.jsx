@@ -26,7 +26,7 @@ const Header = (props) => {
 };
 
 const Wrapper = styled.header`
-  margin-bottom: 20px;
+  height: 16.5vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,7 +35,7 @@ const Wrapper = styled.header`
 const Logo = styled.div`
   font-size: 36px;
   font-weight: 600;
-  padding: 90px 0 0 10vw;
+  padding: 70px 0 20px 10vw;
 `;
 
 const StyledLink = styled(Link)`
@@ -44,7 +44,7 @@ const StyledLink = styled(Link)`
 `;
 
 const Logout = styled.div`
-  padding: 90px 10vw 0 0;
+  padding: 70px 10vw 20px 0;
 `;
 
 const Button = styled.button`
